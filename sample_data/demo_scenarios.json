@@ -1,0 +1,24 @@
+{
+  "description": "Three demonstration scenarios from the BOTS v3 dataset, showing confirmed threats, false positives, and inconclusive cases.",
+  "scenarios": [
+    {
+      "name": "Confirmed Threat: Web Application Attack",
+      "alert": "Multiple HTTP POST requests with SQL injection patterns detected against imreallynotbatman.com from external IP. Investigate for successful exploitation, identify the attacker source, determine what was compromised, and assess the scope of the breach.",
+      "expected_outcome": "High confidence (75-90%). Status: confirmed. The agent should find the brute-force attack from 40.80.148.42, the successful CMS login, and the webshell upload. MITRE: T1190 (Exploit Public-Facing Application), T1505.003 (Web Shell).",
+      "key_evidence": "sourcetype=stream:http shows repeated POST to /joomla/administrator, then file upload. sourcetype=cisco:asa shows blocks after the fact."
+    },
+    {
+      "name": "False Positive: Legitimate Scanning",
+      "alert": "High volume of HTTP requests from 10.0.2.15 scanning multiple internal hosts on port 80. Possible reconnaissance or vulnerability scanning activity detected. Investigate whether this is malicious scanning or authorized security testing.",
+      "expected_outcome": "Low-medium confidence (30-50%). Status: false_positive or suspected. The agent should find the scanning activity is from an internal IP with regular patterns, likely a vulnerability scanner or monitoring tool, not an external threat.",
+      "key_evidence": "Internal IP, regular intervals, no exploit attempts following the scans."
+    },
+    {
+      "name": "Inconclusive: Ambiguous Endpoint Activity",
+      "alert": "PowerShell process with encoded command detected on endpoint WE9041. Investigate whether this is a legitimate admin script, malicious payload execution, or part of software deployment. Determine user context and command contents if possible.",
+      "expected_outcome": "Medium confidence (40-60%). Status: suspected. The agent should find PowerShell execution in Sysmon logs but may lack full context on whether it's malicious without deeper forensic analysis. Recommends human review.",
+      "key_evidence": "sourcetype=xmlwineventlog:microsoft-windows-sysmon/operational shows PowerShell, but intent unclear from logs alone."
+    }
+  ],
+  "demo_flow": "Run all three in sequence. Show that confirmed threats get high confidence + actionable IOCs, false positives get correctly identified and downgraded, and ambiguous cases get flagged for human review rather than guessing."
+}

@@ -1,0 +1,21 @@
+{
+  "description": "Example security alerts you can paste into Incident Narrator. These map to known scenarios in the Splunk BOTS v3 dataset (index=botsv3).",
+  "alerts": [
+    {
+      "track": "web_attack",
+      "alert": "Investigate suspected web application attack against imreallynotbatman.com in botsv3. Look for SQL injection, brute-force login attempts, or CMS exploitation in stream:http / access_combined, identify the attacker source IP, and determine what was compromised."
+    },
+    {
+      "track": "aws_cloud",
+      "alert": "Investigate suspicious AWS activity in botsv3 aws:cloudtrail. Look for anomalous API calls, new IAM users/access keys, S3 bucket access, or privilege escalation, and identify the actor and affected cloud resources."
+    },
+    {
+      "track": "endpoint",
+      "alert": "Investigate suspicious process execution on Windows endpoints in botsv3 using sysmon (xmlwineventlog) and wineventlog. Identify the affected host, the suspicious binary/command line, and any persistence mechanism."
+    },
+    {
+      "track": "data_exfiltration",
+      "alert": "Investigate possible data exfiltration in botsv3. Examine stream:dns for tunneling, web upload activity, and large outbound transfers; identify the source host and external destination."
+    }
+  ]
+}

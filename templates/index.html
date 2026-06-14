@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Incident Narrator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;650;680;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="logo"><span class="mark">IN</span> Incident Narrator</div>
+      <div class="nav-links">
+        <button class="nav-link active" data-view="dashboard" onclick="go('dashboard')">Dashboard</button>
+        <button class="nav-link" data-view="new" onclick="go('new')">New investigation</button>
+        <button class="nav-link" data-view="history" onclick="go('history')">Investigations</button>
+        <button class="nav-link" data-view="connections" onclick="go('connections')">Connections</button>
+      </div>
+      <div class="nav-right">
+        <div class="conn"><span class="dot" id="dotMcp"></span> Splunk</div>
+        <div class="conn"><span class="dot" id="dotGem"></span> Gemini</div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page">
+    <!-- Dashboard -->
+    <section id="view-dashboard" class="view active">
+      <div class="page-head">
+        <div><h1>Dashboard</h1><p>Autonomous security investigations across your Splunk data.</p></div>
+        <button class="btn" onclick="go('new')">New investigation</button>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="label">Investigations run</div><div class="value" id="kpiTotal">0</div><div class="sub">all time</div></div>
+        <div class="kpi crit"><div class="label">Confirmed threats</div><div class="value" id="kpiConfirmed">0</div><div class="sub">status = confirmed</div></div>
+        <div class="kpi"><div class="label">Critical / high</div><div class="value" id="kpiCrit">0</div><div class="sub">by severity</div></div>
+        <div class="kpi accent"><div class="label">Avg. time to report</div><div class="value" id="kpiAvg">—</div><div class="sub">per investigation</div></div>
+      </div>
+      <div class="section-title">Recent investigations</div>
+      <div class="card" id="recentWrap"></div>
+    </section>
+
+    <!-- New investigation -->
+    <section id="view-new" class="view">
+      <div class="page-head"><div><h1>New investigation</h1><p>Describe a security alert. The agent will query Splunk, correlate the evidence, and write an incident report.</p></div></div>
+      <div class="card card-pad intake">
+        <textarea id="alertInput" placeholder="Describe the alert to investigate — for example: 'Suspicious outbound traffic from a web server to an unknown external host, possible data exfiltration.'"></textarea>
+        <div class="intake-foot">
+          <span style="font-size:12.5px;color:var(--muted)">Investigates <b>index=botsv3</b> via the Splunk MCP Server.</span>
+          <button class="btn" id="runBtn" onclick="runInvestigation()">Run investigation</button>
+        </div>
+        <div class="scenarios" id="scenarios"></div>
+      </div>
+
+      <div id="liveArea" class="hidden">
+        <div class="section-title" id="traceLabel"><span class="pulse"></span> Investigation in progress</div>
+        <div class="trace" id="traceList"></div>
+        <div id="reportArea" class="report"></div>
+      </div>
+    </section>
+
+    <!-- History -->
+    <section id="view-history" class="view">
+      <div class="page-head"><div><h1>Investigations</h1><p>Every investigation is saved here for review and export.</p></div>
+        <button class="btn" onclick="go('new')">New investigation</button></div>
+      <div id="historyWrap"></div>
+    </section>
+
+    <!-- Detail -->
+    <section id="view-detail" class="view">
+      <div class="page-head"><div><h1>Investigation</h1><p>Full trace and incident report.</p></div>
+        <button class="btn btn-ghost" onclick="go('history')">← Back to list</button></div>
+      <div id="detailWrap"></div>
+    </section>
+
+    <!-- Connections -->
+    <section id="view-connections" class="view">
+      <div class="page-head"><div><h1>Connections</h1><p>Live status of the systems Incident Narrator depends on.</p></div></div>
+      <div class="conn-grid" id="connWrap"></div>
+    </section>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
