@@ -29,7 +29,7 @@ Google Gemini 2.5 Flash drives an autonomous investigation loop: at each step it
 
 ## Architecture
 
-See [`architecture_diagram.md`](./architecture_diagram.png).
+See [`architecture_diagram.png`](./architecture_diagram.png).
 
 ```
 Alert → Flask API → AI Agent Loop → Splunk MCP/REST → Incident Report → Writes to narrator_investigations index
